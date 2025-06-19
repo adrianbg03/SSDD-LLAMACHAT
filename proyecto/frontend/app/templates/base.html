@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100 dark"> <!-- Documento en español, con clase dark para modo oscuro -->
+
+<head>
+  <meta charset="utf-8" /> <!-- Codificación UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive en móviles -->
+  <title>{% block title %}LlamaChat{% endblock %}</title> <!-- Título dinámico, con valor por defecto -->
+
+  <!-- Tailwind CSS (framework de estilos) cargado desde CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',  // Habilita modo oscuro con la clase 'dark'
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4f46e5', // Azul principal para textos y elementos destacados
+            accent: '#14b8a6',  // Color secundario (turquesa) para hover y detalles
+          }
+        }
+      }
+    };
+  </script>
+
+  {% block custom_style %}{% endblock %} <!-- Espacio opcional para que las páginas hijas añadan estilos -->
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+  <!-- bg-gray-900: fondo oscuro -->
+  <!-- text-white: texto claro -->
+  <!-- flex flex-col: para que el footer quede abajo si hay poco contenido -->
+
+  <!-- Navbar -->
+  <header class="bg-gray-800 shadow-md"> <!-- Cabecera fija con fondo gris oscuro y sombra -->
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="{{ url_for('index') }}" class="text-xl font-bold text-primary">
+        Sistemas Distribuidos 24/25
+      </a>
+      <nav class="space-x-4">
+        <!-- Enlaces comunes -->
+        <a href="{{ url_for('index') }}" class="hover:text-accent">Inicio</a>
+        <a href="{{ url_for('signup') }}" class="hover:text-accent">Regístrate</a>
+
+        {% if current_user.is_authenticated %}
+          <!-- Enlaces solo si el usuario ha iniciado sesión -->
+          <a href="{{ url_for('profile') }}" class="hover:text-accent">Perfil</a>
+          <a href="{{ url_for('logout') }}" class="hover:text-accent">Logout</a>
+          <a href="{{ url_for('prompt') }}" class="hover:text-accent">Chat</a>
+          <a href="{{ url_for('logs') }}" class="hover:text-accent">Logs</a>
+          <a href="{{ url_for('stats') }}" class="hover:text-accent">Estadísticas</a>
+        {% else %}
+          <!-- Enlace para iniciar sesión si no está autenticado -->
+          <a href="{{ url_for('login') }}" class="hover:text-accent">Login</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Contenido principal (rellenado por las plantillas hijas) -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer fijo abajo si hay poco contenido -->
+  <footer class="bg-gray-800 text-sm text-center text-gray-400 py-4">
+    Aplicación distribuida con ❤️ - Curso 24/25
+  </footer>
+
+  <!-- JS opcional: Bootstrap bundle (si se usa) -->
+  <script src="/static/bootstrap.bundle.min.js"></script>
+</body>
+</html>

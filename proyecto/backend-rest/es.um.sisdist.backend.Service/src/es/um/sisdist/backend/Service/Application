@@ -1,0 +1,19 @@
+package es.um.sisdist.backend;
+
+import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.core.Application;
+import java.util.Set;
+import java.util.HashSet;
+
+import es.um.sisdist.backend.Service.PromptEndpoints;
+
+@ApplicationPath("/api") 
+public class MyApplication extends Application {
+
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> classes = new HashSet<>();
+        classes.add(PromptEndpoints.class); 
+        return classes;
+    }
+}

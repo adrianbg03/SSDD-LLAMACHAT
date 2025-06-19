@@ -1,0 +1,4 @@
+flask
+ctransformers
+pytest>=8.0.2
+requests

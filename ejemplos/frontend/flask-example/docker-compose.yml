@@ -1,0 +1,15 @@
+version: '2'
+services:
+
+  flask-example:
+    build: .
+    ports:
+      - "5010:5000"
+    environment:
+      - FLASK_APP=app/app.py
+      - FLASK_DEBUG=true
+    volumes:
+      - .:/flask-example
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+

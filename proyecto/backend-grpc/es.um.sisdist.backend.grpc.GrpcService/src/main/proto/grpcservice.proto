@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "es.um.sisdist.backend.grpc";
+
+package es.um.sisdist.backend.grpc;
+
+service GrpcService
+{
+    rpc Ping(PingRequest) returns (PingResponse);
+
+	// Enviar un prompt y recibir un token para consultar despues.
+	// El backend llama a llamachat en /promt y devuelve el token al cliente gRPC
+	rpc SendPrompt(PromptRequest) returns (PromptResponse);
+
+	// Consultar el estado /response/{token} del token recibido
+	rpc GetResponse(ResponseRequest) returns (ResponseResponse);
+}
+
+message PingRequest
+{
+	int32 v = 1;
+}
+
+message PingResponse
+{
+	int32 v = 1;
+}
+
+//Mensaje para enviar un prompt
+message PromptRequest
+{
+	string prompt = 1;
+}
+
+//Respuesta con el token de seguimiento
+message PromptResponse
+{
+	string token = 1;
+}
+
+//Mensaje para solicitar la respuesta con un token
+message ResponseRequest {
+    string token = 1;
+}
+
+//Respuesta con el estado o contenido de la respuesta
+message ResponseResponse {
+    string status = 1;
+    string answer = 2;
+}

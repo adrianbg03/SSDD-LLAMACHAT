@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-xl mt-10">
+  <h2 class="text-2xl font-semibold mb-4">💬 Chat con LlamaChat</h2>
+
+  <div id="chat-box" class="bg-gray-700 p-4 rounded-lg mb-4 h-64 overflow-y-auto text-sm space-y-2">
+    <!-- Aquí aparecen los mensajes -->
+  </div>
+
+  <form id="chat-form" class="flex space-x-2">
+    <input type="text" id="user-message" class="flex-grow px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Escribe un mensaje..." required>
+    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium">Enviar</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('chat-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let message = document.getElementById('user-message').value;
+    let chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML += `
+      <div class="bg-gray-600 text-white p-2 rounded-md">
+        <strong>🧑 Tú:</strong> ${message}
+      </div>`;
+    document.getElementById('user-message').value = '';
+
+    fetch('/Service/prompt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: message })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("No se pudo enviar el prompt");
+      return response.json();
+    })
+    .then(answer => {
+      chatBox.innerHTML += `
+        <div class="bg-indigo-900 text-yellow-300 p-3 rounded-md border-l-4 border-yellow-500">
+          <strong>🦙 LlamaChat dice:</strong> ${answer.answer}
+        </div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(error => {
+      chatBox.innerHTML += `<p class="text-red-500">Error: ${error.message}</p>`;
+    });
+  });
+</script>
+{% endblock %}

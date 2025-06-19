@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+<!-- Extiende la plantilla base: hereda navbar, estilos y estructura general -->
+
+{% block content %}
+<!-- Bloque donde se inyecta el contenido principal -->
+
+<div class="max-w-xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-xl mt-10">
+  <!-- Contenedor central: fondo oscuro, bordes redondeados, sombra -->
+  <h1 class="text-2xl font-semibold text-center text-white mb-6">
+    Registrar nuevo usuario
+  </h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <!-- Muestra un mensaje de error o éxito (por ejemplo, "registro fallido") -->
+      <div class="bg-red-500 text-white p-4 rounded-lg mb-4 text-sm text-center">
+        {{ messages[0] }}<br>
+        <a href="{{ url_for('login') }}" class="underline hover:text-accent">
+          Ir a la página de login
+        </a>.
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Formulario de registro -->
+  <form method="POST" action="/signup">
+    {{ form.hidden_tag() }}
+    <!-- Token CSRF y campos ocultos para protección -->
+
+    <!-- Campo: Nombre completo -->
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium mb-1">Nombre completo</label>
+      <input type="text" name="name" id="name" placeholder="Tu nombre"
+        class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+        required>
+    </div>
+
+    <!-- Campo: Correo electrónico -->
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium mb-1">Correo electrónico</label>
+      <input type="email" name="email" id="email" placeholder="email@ejemplo.com"
+        class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+        required>
+    </div>
+
+    <!-- Campo: Contraseña -->
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium mb-1">Contraseña</label>
+      <input type="password" name="password" id="password" placeholder="••••••••"
+        class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+        required>
+    </div>
+
+    <!-- Campo: Confirmar contraseña -->
+    <div class="mb-6">
+      <label for="confirm_password" class="block text-sm font-medium mb-1">Confirmar contraseña</label>
+      <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••"
+        class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+        required>
+    </div>
+
+    <!-- Botón de enviar -->
+    <button type="submit"
+      class="w-full bg-primary hover:bg-indigo-600 text-white py-2 rounded-lg font-semibold transition duration-200">
+      Registrarse
+    </button>
+  </form>
+</div>
+
+{% endblock %}

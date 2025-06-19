@@ -1,0 +1,27 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ '24-25', '23-24', 'v*' ]
+  pull_request:
+    branches: [ '24-25', '23-24', 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: proyecto
+    steps:
+
+      - name: Checkout the repo.
+        uses: actions/checkout@v4
+
+      - name: Create an empty .m2 directory for the default user. If not, scripts may fail
+        run: mkdir -p ~/.m2
+
+      - name: build proyecto
+        run: make
